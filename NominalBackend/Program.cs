@@ -6,6 +6,8 @@ using NominalBackend.Domain.Items.Repositories;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Repositories;
 using NominalBackend.Domain.SubCategories.Services;
+using NominalBackend.Domain.Wishlists.Repositories;
+using NominalBackend.Domain.Wishlists.Services;
 using NominalBackend.Generics;
 using NominalBackend.Persistence;
 using NominalBackend.UnitOfWork;
@@ -33,6 +35,9 @@ builder.Services.AddScoped<IItemService, ItemService>();
 
 builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
 builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+
+builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+builder.Services.AddScoped<IWishlistService, WishlistService>();
 
 
 builder.Services.AddControllers();

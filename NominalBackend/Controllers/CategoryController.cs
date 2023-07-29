@@ -21,6 +21,7 @@ namespace NominalBackend.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var category = await _categoryService.GetByIdAsync(id);
+            if(category == null) { return NotFound(); }
             return Ok(new
             {
                 category
@@ -33,6 +34,7 @@ namespace NominalBackend.Controllers
         public async Task<IActionResult> GetAll()
         {
             var categories = await _categoryService.GetAllAsync();
+            if(!categories.Any()) { return NotFound(); }
             return Ok(new
             {
                 categories
