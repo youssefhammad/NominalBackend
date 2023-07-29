@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Categories.Repositories;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Images.Repositories;
+using NominalBackend.Domain.Images.Services;
 using NominalBackend.Domain.Items.Repositories;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Repositories;
@@ -41,6 +42,9 @@ builder.Services.AddScoped<IWishlistService, WishlistService>();
 
 builder.Services.AddScoped<IDimensionRepository, DimensionRepository>();
 builder.Services.AddScoped<IDimensionService, DimensionService>();
+
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 
 builder.Services.AddControllers();
