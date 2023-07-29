@@ -16,7 +16,8 @@ namespace NominalBackend.Controllers
         }
 
 
-        [HttpGet]       
+        [HttpGet]
+        [Route("GetCategory/{id}", Name = "GetCategory")]
         public async Task<IActionResult> GetById(int id)
         {
             var category = await _categoryService.GetByIdAsync(id);

@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Categories.Repositories;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Images.Repositories;
+using NominalBackend.Domain.Items.Repositories;
+using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Repositories;
 using NominalBackend.Generics;
 using NominalBackend.Persistence;
@@ -24,6 +26,9 @@ builder.Services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IItemService, ItemService>();
 
 
 builder.Services.AddControllers();
