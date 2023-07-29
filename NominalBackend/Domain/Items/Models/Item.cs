@@ -46,18 +46,18 @@ namespace NominalBackend.Domain.Items.Models
 
         [JsonPropertyName("sub_category_id")]
         public int? SubCategoryId { get; set; } // mark as nullable
-        public SubCategory SubCategory { get; set; }
+        public SubCategory? SubCategory { get; set; }
 
         [JsonPropertyName("category_id")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
         
         [JsonPropertyName("dimension_id")]
-        public int DimensionsId { get; set; }
-        public Dimensions Dimensions { get; set; }
-        public ICollection<Image> Images { get; set; }
-        public ICollection<Wishlist> Wishlists { get; set; }
-        public ICollection<PurchaseItem> PurchaseItems { get; set; }
+        public int? DimensionsId { get; set; }
+        public Dimensions? Dimensions { get; set; }
+        public ICollection<Image>? Images { get; set; }
+        public ICollection<Wishlist>? Wishlists { get; set; }
+        public ICollection<PurchaseItem>? PurchaseItems { get; set; }
 
     }
 }
