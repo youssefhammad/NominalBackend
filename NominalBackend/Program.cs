@@ -5,6 +5,7 @@ using NominalBackend.Domain.Images.Repositories;
 using NominalBackend.Domain.Items.Repositories;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Repositories;
+using NominalBackend.Domain.SubCategories.Services;
 using NominalBackend.Generics;
 using NominalBackend.Persistence;
 using NominalBackend.UnitOfWork;
@@ -29,6 +30,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IItemService, ItemService>();
+
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 
 
 builder.Services.AddControllers();
