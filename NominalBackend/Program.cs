@@ -2,7 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Categories.Repositories;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Images.Repositories;
+using NominalBackend.Domain.Images.Services;
+using NominalBackend.Domain.Items.Repositories;
+using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Repositories;
+using NominalBackend.Domain.SubCategories.Services;
+using NominalBackend.Domain.Wishlists.Repositories;
+using NominalBackend.Domain.Wishlists.Services;
 using NominalBackend.Generics;
 using NominalBackend.Persistence;
 using NominalBackend.UnitOfWork;
@@ -24,6 +30,21 @@ builder.Services.AddScoped(typeof(ICrudService<>), typeof(CrudService<>));
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IItemService, ItemService>();
+
+builder.Services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
+builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
+
+builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
+builder.Services.AddScoped<IWishlistService, WishlistService>();
+
+builder.Services.AddScoped<IDimensionRepository, DimensionRepository>();
+builder.Services.AddScoped<IDimensionService, DimensionService>();
+
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 
 builder.Services.AddControllers();
