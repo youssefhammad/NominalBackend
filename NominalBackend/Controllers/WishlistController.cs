@@ -22,6 +22,7 @@ namespace NominalBackend.Controllers
         {
             var wishlist = await _wishlistService.GetByIdAsync(id);
             if (wishlist == null) { return NotFound(); }
+            Console.WriteLine("hamo");
             return Ok(new
             {
                 wishlist
