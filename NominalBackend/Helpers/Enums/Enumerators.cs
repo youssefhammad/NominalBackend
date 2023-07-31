@@ -39,4 +39,12 @@ namespace NominalBackend.Helpers.Enums
         [JsonPropertyName("done")]
         Done
     }
+
+    public enum Sorting
+    {
+        [JsonPropertyName("ascending")]
+        Ascending,
+        [JsonPropertyName("descending")]
+        Descending
+    }
 }

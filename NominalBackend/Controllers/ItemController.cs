@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Items.Services;
+using NominalBackend.Helpers.Filters;
 
 namespace NominalBackend.Controllers
 {
@@ -71,6 +72,14 @@ namespace NominalBackend.Controllers
             {
                 item
             });
+        }
+
+        [HttpPost]
+        [Route("FilterItems", Name = "FilterItems")]
+        public async Task<IActionResult> FilterItems(ItemFilter filter)
+        {
+            var items = await _itemService.FilterItems(filter);
+            return Ok(new { items });
         }
     }
 }
