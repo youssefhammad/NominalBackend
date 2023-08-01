@@ -21,10 +21,10 @@ namespace NominalBackend.Domain.Wishlists.Models
 
         [JsonPropertyName("user_id")]
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [JsonPropertyName("item_id")]
         public int ItemId { get; set; }
-        public Item Item { get; set; }
+        public Item? Item { get; set; }
     }
 }

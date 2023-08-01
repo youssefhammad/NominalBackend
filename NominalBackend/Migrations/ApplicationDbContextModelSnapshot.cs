@@ -54,7 +54,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Image", b =>
@@ -103,7 +103,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Items.Models.Dimensions", b =>
@@ -132,7 +132,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Dimensions");
+                    b.ToTable("Dimensions", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Items.Models.Item", b =>
@@ -201,7 +201,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Purchases.Models.Purchase", b =>
@@ -241,7 +241,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Purchases");
+                    b.ToTable("Purchases", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Purchases.Models.PurchaseItem", b =>
@@ -270,7 +270,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("PurchaseId");
 
-                    b.ToTable("PurchaseItem");
+                    b.ToTable("PurchaseItem", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.SubCategories.Models.SubCategory", b =>
@@ -311,7 +311,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("SubCategories");
+                    b.ToTable("SubCategories", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Users.Models.User", b =>
@@ -397,7 +397,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Wishlists.Models.Wishlist", b =>
@@ -430,7 +430,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wishlists");
+                    b.ToTable("Wishlists", (string)null);
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Image", b =>
