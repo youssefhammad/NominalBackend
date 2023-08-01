@@ -17,8 +17,11 @@ namespace NominalBackend.Helpers.Filters
         [JsonPropertyName("sub_category_id")]
         public int? SubCategoryId { get; set; }
 
+        [JsonPropertyName("sort_by")]
+        public SortedBy? SortedBy { get; set; }
+
         [JsonPropertyName("price_by_sorting")]
-        public Sorting PriceBySorting { get; set; }
+        public Sorting? PriceBySorting { get; set; }
 
     }
 }

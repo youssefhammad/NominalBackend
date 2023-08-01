@@ -38,7 +38,7 @@ namespace NominalBackend.Controllers
                 Data = imageData,
                 ImageName = image.FileName,
                 ItemId = itemId,
-                State = State.Created,
+                State = State.Active,
                 Size = image.Length
             };
             await _imageService.AddAsync(entity);

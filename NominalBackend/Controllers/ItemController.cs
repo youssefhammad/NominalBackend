@@ -76,10 +76,21 @@ namespace NominalBackend.Controllers
 
         [HttpPost]
         [Route("FilterItems", Name = "FilterItems")]
-        public async Task<IActionResult> FilterItems(ItemFilter filter)
+        public async Task<IActionResult> FilterItems(ItemFilter filter, [FromQuery] int skip = 0,[FromQuery] int size = 9)
         {
             var items = await _itemService.FilterItems(filter);
-            return Ok(new { items });
+            var filteredItemsTotalCount = await _itemService.CalculateTotalNumberOfFilteredItems(items);
+            var paginateditems = await _itemService.PagenateItems(items, skip, size);
+            if (!paginateditems.Any())
+            {
+                return NotFound("No Items Found");
+            }
+            var enabledNextButton = await _itemService.EnableNextButton(filteredItemsTotalCount, paginateditems.Count() + skip);
+            return Ok(new
+            {
+                paginateditems,
+                enabledNextButton
+            });
         }
     }
 }
