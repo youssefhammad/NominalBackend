@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NominalBackend.Domain.Categories.Models;
 using NominalBackend.Domain.Categories.Services;
+using NominalBackend.Helpers.Enums;
 
 namespace NominalBackend.Controllers
 {
@@ -45,6 +46,7 @@ namespace NominalBackend.Controllers
         [Route("CreateCategory", Name = "CreateCategory")]
         public async Task<IActionResult> Create(Category category)
         {
+            category.State = State.Active;
             await _categoryService.AddAsync(category);
             return Ok(new
             {
