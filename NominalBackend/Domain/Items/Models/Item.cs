@@ -49,7 +49,7 @@ namespace NominalBackend.Domain.Items.Models
         public SubCategory? SubCategory { get; set; }
 
         [JsonPropertyName("category_id")]
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public Category? Category { get; set; }
         
         [JsonPropertyName("dimension_id")]

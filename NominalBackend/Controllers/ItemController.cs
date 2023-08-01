@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Items.Services;
+using NominalBackend.Domain.SubCategories.Services;
+using NominalBackend.Helpers.Enums;
+using NominalBackend.Helpers.Filters;
 
 namespace NominalBackend.Controllers
 {
@@ -9,10 +13,14 @@ namespace NominalBackend.Controllers
     public class ItemController : Controller
     {
         private readonly IItemService _itemService;
+        private readonly ISubCategoryService _subCategoryService;
+        private readonly ICategoryService _categoryService;
 
-        public ItemController(IItemService itemService)
+        public ItemController(IItemService itemService, ISubCategoryService subCategoryService, ICategoryService categoryService)
         {
             _itemService = itemService;
+            _subCategoryService = subCategoryService;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -20,7 +28,7 @@ namespace NominalBackend.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var item = await _itemService.GetByIdAsync(id);
-            if(item == null) { return NotFound(); }            
+            if (item == null) { return NotFound(); }
             return Ok(new
             {
                 item
@@ -44,10 +52,24 @@ namespace NominalBackend.Controllers
         [Route("CreateItem", Name = "CreateItem")]
         public async Task<IActionResult> Create(Item item)
         {
+            if (item.CategoryId != default(int))
+            {
+                var category = await _categoryService.GetByIdAsync(item.CategoryId);
+                if (category == null) { return BadRequest("Invalid CategoryId"); }
+                var SubCatId = item.SubCategoryId.Value;
+                if (SubCatId != default(int))
+                {
+                    var subCategory = await _subCategoryService.GetByIdAsync(SubCatId);
+                    if (subCategory == null) { return BadRequest("Invalid SubCategoryId"); }
+                    bool matchingSubAndCategory = await _subCategoryService.IsSubCategoryRelatesToCategoty(SubCatId, item.CategoryId);
+                    if (!matchingSubAndCategory) { return BadRequest("SubCategory Not Match Category"); }
+                }
+            }
+            item.State = State.Active;
             await _itemService.AddAsync(item);
             return Ok(new
             {
-                item
+                item.Id
             });
         }
 
@@ -70,6 +92,25 @@ namespace NominalBackend.Controllers
             return Ok(new
             {
                 item
+            });
+        }
+
+        [HttpPost]
+        [Route("FilterItems", Name = "FilterItems")]
+        public async Task<IActionResult> FilterItems(ItemFilter filter, [FromQuery] int skip = 0, [FromQuery] int size = 9)
+        {
+            var items = await _itemService.FilterItems(filter);
+            var filteredItemsTotalCount = await _itemService.CalculateTotalNumberOfFilteredItems(items);
+            var paginateditems = await _itemService.PagenateItems(items, skip, size);
+            if (!paginateditems.Any())
+            {
+                return NotFound("No Items Found");
+            }
+            var enabledNextButton = await _itemService.EnableNextButton(filteredItemsTotalCount, paginateditems.Count() + skip);
+            return Ok(new
+            {
+                paginateditems,
+                enabledNextButton
             });
         }
     }

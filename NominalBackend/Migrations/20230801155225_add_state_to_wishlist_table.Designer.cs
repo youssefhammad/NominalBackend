@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230801155225_add_state_to_wishlist_table")]
+    partial class add_state_to_wishlist_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +146,7 @@ namespace NominalBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "category_id");
 
@@ -281,7 +284,7 @@ namespace NominalBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "category_id");
 
@@ -448,9 +451,7 @@ namespace NominalBackend.Migrations
                 {
                     b.HasOne("NominalBackend.Domain.Categories.Models.Category", "Category")
                         .WithMany("Items")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("NominalBackend.Domain.Items.Models.Dimensions", "Dimensions")
                         .WithMany()
@@ -501,9 +502,7 @@ namespace NominalBackend.Migrations
                 {
                     b.HasOne("NominalBackend.Domain.Categories.Models.Category", "Category")
                         .WithMany("SubCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });

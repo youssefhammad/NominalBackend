@@ -1,6 +1,7 @@
 ﻿using NominalBackend.Domain.Categories.Models;
 using NominalBackend.Domain.Items.Models;
 using NominalBackend.Helpers.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace NominalBackend.Domain.SubCategories.Models
@@ -28,9 +29,11 @@ namespace NominalBackend.Domain.SubCategories.Models
 
         [JsonPropertyName("state")]
         public State State { set; get; }
+  
         [JsonPropertyName("category_id")]
-        public int? CategoryId { get; set; }
-        public Category Category { get; set; }
-        public ICollection<Item> Items { get; set; }
+        [Required(ErrorMessage = "CategoryId is required")]
+        public int CategoryId { get; set; }
+        public Category? Category { get; set; }
+        public ICollection<Item>? Items { get; set; }
     }
 }
