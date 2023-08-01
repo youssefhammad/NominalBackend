@@ -78,9 +78,9 @@ namespace NominalBackend.Controllers
 
         [HttpDelete]
         [Route("SoftDeleteWishlist", Name = "SoftDeleteWishlist")]
-        public async Task<IActionResult> SoftDelete(User user,Wishlist wishlist)
+        public async Task<IActionResult> SoftDelete(int userId, Wishlist wishlist)
         {
-            if(user.Id != wishlist.UserId)
+            if(userId != wishlist.UserId)
             {
                 return Unauthorized("Not allowed");
             }
