@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230802140901_initial_auth_migration")]
+    partial class initial_auth_migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,22 +50,6 @@ namespace NominalBackend.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "88fed88c-42e7-4fe9-b971-c8acd728140d",
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "52664e1a-f3a5-4c5a-9705-64f926ff252a",
-                            ConcurrencyStamp = "2",
-                            Name = "Client",
-                            NormalizedName = "Client"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
