@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.SubCategories.Models;
 using NominalBackend.Domain.SubCategories.Services;
+using NominalBackend.Helpers.Enums;
 
 namespace NominalBackend.Controllers
 {
@@ -9,10 +11,12 @@ namespace NominalBackend.Controllers
     public class SubCategoryController : Controller
     {
         private readonly ISubCategoryService _subCategoryService;
+        private readonly ICategoryService _categoryService;
 
-        public SubCategoryController(ISubCategoryService subCategoryService)
+        public SubCategoryController(ISubCategoryService subCategoryService, ICategoryService categoryService)
         {
             _subCategoryService = subCategoryService;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
@@ -71,6 +75,24 @@ namespace NominalBackend.Controllers
             {
                 subCategory
             });
+        }
+
+        [HttpPost]
+        [Route("AttachNewSubCategoryToCategory", Name = "AttachNewSubCategoryToCategory")]
+        public async Task<IActionResult> AddSubCategory(SubCategory subCategory)
+        {
+            var category = await _categoryService.GetByIdAsync(subCategory.CategoryId);
+            if (category == null)
+            {
+                return BadRequest($"No category with {subCategory.CategoryId} Id");
+            }
+            subCategory.State = State.Active;
+            await _subCategoryService.AddAsync(subCategory);
+            return Ok(new
+            {
+                subCategory.Id
+            });
+            
         }
     }
 

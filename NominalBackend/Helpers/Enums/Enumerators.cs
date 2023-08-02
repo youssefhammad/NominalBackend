@@ -17,8 +17,8 @@ namespace NominalBackend.Helpers.Enums
 
     public enum State 
     {
-        [JsonPropertyName("created")]
-        Created,
+        [JsonPropertyName("active")]
+        Active,
         [JsonPropertyName("soft_deleted")]
         SoftDeleted
     }
@@ -38,5 +38,21 @@ namespace NominalBackend.Helpers.Enums
         Pending,
         [JsonPropertyName("done")]
         Done
+    }
+
+    public enum Sorting
+    {
+        [JsonPropertyName("ascending")]
+        Ascending,
+        [JsonPropertyName("descending")]
+        Descending
+    }
+
+    public enum SortedBy
+    {
+        [JsonPropertyName("price")]
+        Price,
+        [JsonPropertyName("created_at")]
+        CreatedAt
     }
 }

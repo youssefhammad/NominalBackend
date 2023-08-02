@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Categories.Models;
 using NominalBackend.Domain.Images.Models;
 using NominalBackend.Domain.Items.Models;
@@ -9,7 +11,7 @@ using NominalBackend.Domain.Wishlists.Models;
 
 namespace NominalBackend.Persistence
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
@@ -19,6 +21,17 @@ namespace NominalBackend.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            SeedRoles(modelBuilder);
+        }
+
+        private static void SeedRoles(ModelBuilder builder)
+        {
+            builder.Entity<IdentityRole>().HasData
+                (
+                new IdentityRole() { Name = "Admin", ConcurrencyStamp = "1", NormalizedName = "Admin" },
+                new IdentityRole() { Name = "Client", ConcurrencyStamp = "2", NormalizedName = "Client" }
+
+                );
         }
 
         public DbSet<User> Users { get; set; }

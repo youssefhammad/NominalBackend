@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NominalBackend.Domain.Items.Models;
+using NominalBackend.Domain.Users.Models;
 using NominalBackend.Domain.Wishlists.Models;
 using NominalBackend.Domain.Wishlists.Services;
+using NominalBackend.Helpers.Enums;
 
 namespace NominalBackend.Controllers
 {
@@ -71,6 +73,22 @@ namespace NominalBackend.Controllers
             return Ok(new
             {
                 wishlist
+            });
+        }
+
+        [HttpDelete]
+        [Route("SoftDeleteWishlist", Name = "SoftDeleteWishlist")]
+        public async Task<IActionResult> SoftDelete(int userId, Wishlist wishlist)
+        {
+            if(userId != wishlist.UserId)
+            {
+                return Unauthorized("Not allowed");
+            }
+            wishlist.State = State.SoftDeleted;
+            await _wishlistService.UpdateAsync(wishlist);
+            return Ok(new
+            {
+                wishlist.Id
             });
         }
     }
