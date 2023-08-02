@@ -32,8 +32,16 @@ namespace NominalBackend.Domain.Images.Models
         [JsonPropertyName("url")]
         public string? Url { get; set; }
 
+        [JsonPropertyName("is_default_item_image")]
+        public bool IsDefaultItemImage { get; set; }  //default image to show in home page
+
+        [JsonPropertyName("is_default_item_color")]
+        public bool IsDefaultItemColor { get; set; } //default image to show per every color in same item
+
         [JsonPropertyName("state")]
         public State State { get; set; }
+
+        
 
         [JsonPropertyName("item_id")]
         public int ItemId { get; set; }
