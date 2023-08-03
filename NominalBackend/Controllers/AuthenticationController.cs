@@ -82,7 +82,6 @@ namespace NominalBackend.Controllers
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, role));
                 }
-                Console.WriteLine(userRoles.First().ToString());
                 var jwtToken = GetToken(authClaims);
                 return Ok(new
                 {
