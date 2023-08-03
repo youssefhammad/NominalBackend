@@ -60,7 +60,7 @@ namespace NominalBackend.Controllers
         [Route("DeleteColor", Name ="DeleteColor")]
         public async Task<IActionResult> Delete(Color color)
         {
-            var colorExsist = await _colorService.GetByIdAsync(color.id);
+            var colorExsist = await _colorService.GetByIdAsync(color.Id);
             if (colorExsist == null)
             {
                 return BadRequest();

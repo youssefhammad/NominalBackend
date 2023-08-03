@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230803033511_modify_relation_color_image")]
+    partial class modify_relation_color_image
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace NominalBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "727d3c42-77eb-4370-a706-2e11bd5dbf22",
+                            Id = "a5580ce5-6775-4200-a609-f9659ca64ffd",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "97d02f91-fcfe-46d3-ad69-44ebf0033d90",
+                            Id = "28e234d8-e57d-422c-a80f-e8415b404921",
                             ConcurrencyStamp = "2",
                             Name = "Client",
                             NormalizedName = "Client"
@@ -273,11 +276,11 @@ namespace NominalBackend.Migrations
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("HexDicemal")
                         .IsRequired()
@@ -289,7 +292,7 @@ namespace NominalBackend.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "color_name");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Color");
                 });
