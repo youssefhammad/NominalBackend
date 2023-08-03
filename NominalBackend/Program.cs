@@ -59,6 +59,9 @@ builder.Services.AddScoped<IDimensionService, DimensionService>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IImageService, ImageService>();
 
+builder.Services.AddScoped<IColorRepository,ColorRepository>();
+builder.Services.AddScoped<IColorService, ColorService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
