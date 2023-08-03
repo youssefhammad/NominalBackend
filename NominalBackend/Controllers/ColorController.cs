@@ -74,11 +74,11 @@ namespace NominalBackend.Controllers
         [Route("UpdateColor",Name = "UpdateColor")]
         public async Task<IActionResult> Update(Color color)
         {
-            //var colorExcist = await _colorService.GetByIdAsync(color.id);
-            //if (colorExcist == null)
-            //{
-            //    return BadRequest();
-            //}
+            var colorExcist = await _colorService.GetByIdAsync(color.Id);
+            if (colorExcist == null)
+            {
+                return BadRequest();
+            }
             await _colorService.UpdateAsync(color);
             return Ok(color);
         }
