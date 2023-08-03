@@ -11,7 +11,7 @@ namespace NominalBackend.Domain.Items.Repositories
 {
     public interface IItemRepository : ICrudRepository<Item>
     {
-        Task<IEnumerable<Item>> FilterItems(ItemFilter filter/*, int skip, int size*/);
+        Task<IEnumerable<Item>> FilterItems(ItemFilter filter);
         Task<int> CountItemsNumberWithActiveState(); 
     }
     public class ItemRepository : CrudRepository<Item>, IItemRepository
