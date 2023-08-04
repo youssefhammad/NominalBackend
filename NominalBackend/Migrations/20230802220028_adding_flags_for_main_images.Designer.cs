@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230802220028_adding_flags_for_main_images")]
+    partial class adding_flags_for_main_images
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace NominalBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "727d3c42-77eb-4370-a706-2e11bd5dbf22",
+                            Id = "134ffd06-17b1-4e9f-a985-bf215f83a887",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "97d02f91-fcfe-46d3-ad69-44ebf0033d90",
+                            Id = "f536b409-4908-49a8-ad2f-c8fd299c1df3",
                             ConcurrencyStamp = "2",
                             Name = "Client",
                             NormalizedName = "Client"
@@ -273,11 +276,14 @@ namespace NominalBackend.Migrations
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int?>("Colorid")
+                        .HasColumnType("int");
 
                     b.Property<string>("HexDicemal")
                         .IsRequired()
@@ -289,7 +295,9 @@ namespace NominalBackend.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "color_name");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
+
+                    b.HasIndex("Colorid");
 
                     b.ToTable("Color");
                 });
@@ -734,10 +742,17 @@ namespace NominalBackend.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
+                {
+                    b.HasOne("NominalBackend.Domain.Images.Models.Color", null)
+                        .WithMany("Colors")
+                        .HasForeignKey("Colorid");
+                });
+
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Image", b =>
                 {
                     b.HasOne("NominalBackend.Domain.Images.Models.Color", "Color")
-                        .WithMany("Images")
+                        .WithMany()
                         .HasForeignKey("ColorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -845,7 +860,7 @@ namespace NominalBackend.Migrations
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
                 {
-                    b.Navigation("Images");
+                    b.Navigation("Colors");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Items.Models.Item", b =>

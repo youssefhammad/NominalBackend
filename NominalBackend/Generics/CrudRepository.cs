@@ -41,7 +41,10 @@ namespace NominalBackend.Generics
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            var entity = await _dbContext.Set<T>().FindAsync(id);
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            return entity;
         }
 
         public async Task<T> UpdateAsync(T entity)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230802140901_initial_auth_migration")]
+    partial class initial_auth_migration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,22 +50,6 @@ namespace NominalBackend.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "727d3c42-77eb-4370-a706-2e11bd5dbf22",
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "97d02f91-fcfe-46d3-ad69-44ebf0033d90",
-                            ConcurrencyStamp = "2",
-                            Name = "Client",
-                            NormalizedName = "Client"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -271,29 +258,6 @@ namespace NominalBackend.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("HexDicemal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "hex_decimal");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "color_name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Color");
-                });
-
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -301,9 +265,6 @@ namespace NominalBackend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ColorId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2")
@@ -318,14 +279,6 @@ namespace NominalBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "filename");
-
-                    b.Property<bool>("IsDefaultItemColor")
-                        .HasColumnType("bit")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_default_item_color");
-
-                    b.Property<bool>("IsDefaultItemImage")
-                        .HasColumnType("bit")
-                        .HasAnnotation("Relational:JsonPropertyName", "is_default_item_image");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int")
@@ -348,8 +301,6 @@ namespace NominalBackend.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "url");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ColorId");
 
                     b.HasIndex("ItemId");
 
@@ -736,19 +687,11 @@ namespace NominalBackend.Migrations
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Image", b =>
                 {
-                    b.HasOne("NominalBackend.Domain.Images.Models.Color", "Color")
-                        .WithMany("Images")
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("NominalBackend.Domain.Items.Models.Item", "Item")
                         .WithMany("Images")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Color");
 
                     b.Navigation("Item");
                 });
@@ -841,11 +784,6 @@ namespace NominalBackend.Migrations
                     b.Navigation("Items");
 
                     b.Navigation("SubCategories");
-                });
-
-            modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
-                {
-                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Items.Models.Item", b =>

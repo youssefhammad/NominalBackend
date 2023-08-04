@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NominalBackend.Domain.Categories.Models;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Helpers.Enums;
@@ -29,7 +30,7 @@ namespace NominalBackend.Controllers
             });
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("GetAllCategories", Name = "GetAllCategories")]
         public async Task<IActionResult> GetAll()
