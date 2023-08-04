@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Images.Models;
 using NominalBackend.Domain.Images.Services;
+using NominalBackend.Domain.Items.Services;
 using NominalBackend.Helpers.Enums;
-using System.IO;
-using System.Xml;
 
 namespace NominalBackend.Controllers
 {
@@ -13,10 +12,14 @@ namespace NominalBackend.Controllers
     public class ImageController : Controller
     {
         private readonly IImageService _imageService;
+        private readonly IItemService _itemService;
+        private readonly IColorService _colorService;
 
-        public ImageController(IImageService imageService)
+        public ImageController(IImageService imageService, IItemService itemService, IColorService colorService)
         {
             _imageService = imageService;
+            _itemService = itemService;
+            _colorService = colorService;
         }
 
         [HttpPost]
@@ -96,5 +99,56 @@ namespace NominalBackend.Controllers
                 image
             });
         }
+
+        [HttpPost]
+        [Route("AddMultipleImages", Name = "AddMultipleImages")]
+        public async Task<IActionResult> AddMultipleImages(List<IFormFile> images, [FromQuery] List<int> colorIds, [FromQuery] int itemId)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null)
+            {
+                return BadRequest("Item Not Found");
+            }
+            foreach(var colorId in colorIds)
+            {
+                var color = await _colorService.GetByIdAsync(colorId);
+                if (color == null)
+                {
+                    return BadRequest($"Color with id {colorId} Not Found");
+                }
+            }
+            if(colorIds.Count != images.Count)
+            {
+                return BadRequest("You Must Attach Color To Each Image Ttem");
+            }
+            List<Image> newImages = new List<Image>();
+            for(int i =0; i < images.Count; i++)
+            {
+                if (!await _imageService.IsAPhotoFile(images[i].FileName)) { return BadRequest("Not supported file type"); }
+                var imageData = new byte[images[i].Length];
+                using (var stream = images[i].OpenReadStream())
+                {
+                    await stream.ReadAsync(imageData, 0, (int)images[i].Length);
+                }
+
+                var entity = new Image
+                {
+                    Data = imageData,
+                    ImageName = images[i].FileName,
+                    ItemId = itemId,
+                    State = State.Active,
+                    Size = images[i].Length,
+                    ColorId = colorIds[i]
+                };
+                newImages.Add(entity);
+            }
+
+            await _imageService.AddMultipleAsync(newImages);
+            return Ok(new
+            {
+
+            });
+        }
     }
+
 }
