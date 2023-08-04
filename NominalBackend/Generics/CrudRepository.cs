@@ -11,6 +11,7 @@ namespace NominalBackend.Generics
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task AddMultipleAsync(List<T> entities);
     }
 
 
@@ -27,6 +28,11 @@ namespace NominalBackend.Generics
         {
             await _dbContext.Set<T>().AddAsync(entity);
             return entity;
+        }
+
+        public async Task AddMultipleAsync(List<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
         }
 
         public async Task DeleteAsync(T entity)

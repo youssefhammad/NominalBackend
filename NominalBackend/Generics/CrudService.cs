@@ -9,6 +9,7 @@ namespace NominalBackend.Generics
         Task<int> AddAsync(T entity);
         Task<int> UpdateAsync(T entity);
         Task<int> DeleteAsync(T entity);
+        Task<int> AddMultipleAsync(List<T> entities);
     }
     public class CrudService<T> : ICrudService<T> where T: class
     {
@@ -46,6 +47,12 @@ namespace NominalBackend.Generics
         public async Task<int> DeleteAsync(T entity)
         {
             await _repository.DeleteAsync(entity);
+            return await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<int> AddMultipleAsync(List<T> entities)
+        {
+            await _repository.AddMultipleAsync(entities);
             return await _unitOfWork.SaveChangesAsync();
         }
     }
