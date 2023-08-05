@@ -91,5 +91,13 @@ namespace NominalBackend.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("GetColorsForItem/{itemId}", Name = "GetColorsForItem")]
+        public async Task<IActionResult> GetColorsForItem(int itemId)
+        {
+            var colors = await _colorService.GetColorsForItemsById(itemId);
+            return Ok(colors);
+        }
+
     }
 }

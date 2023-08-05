@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NominalBackend.DataTransferObjects;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Images.Services;
 using NominalBackend.Domain.Items.Models;
@@ -17,14 +18,16 @@ namespace NominalBackend.Controllers
         private readonly ISubCategoryService _subCategoryService;
         private readonly ICategoryService _categoryService;
         private readonly IImageService _imageService;
+        private readonly IColorService _colorService;
 
         public ItemController(IItemService itemService, ISubCategoryService subCategoryService,
-            ICategoryService categoryService, IImageService imageService)
+            ICategoryService categoryService, IImageService imageService, IColorService colorService)
         {
             _itemService = itemService;
             _subCategoryService = subCategoryService;
             _categoryService = categoryService;
             _imageService = imageService;
+            _colorService = colorService;
         }
 
         [HttpGet]
@@ -111,13 +114,26 @@ namespace NominalBackend.Controllers
                 return NotFound("No Items Found");
             }
             var enabledNextButton = await _itemService.EnableNextButton(filteredItemsTotalCount, paginateditems.Count() + skip);
+
+            List<GetAndFilterItemsDTO> itemsDTO = new List<GetAndFilterItemsDTO>();
+
             foreach (var paginateditem in paginateditems)
             {
                 await _imageService.GetImagesByItemId(paginateditem.Id);
+                var availableColorsForitem = await _colorService.GetColorsForItemsById(paginateditem.Id);
+
+                var itemDTO = new GetAndFilterItemsDTO
+                {
+                    Item = paginateditem,
+                    AvailableColors = availableColorsForitem.ToList()
+                };
+
+                itemsDTO.Add(itemDTO);
             }
+
             return Ok(new
             {
-                paginateditems,
+                itemsDTO,
                 enabledNextButton
             });
         }
