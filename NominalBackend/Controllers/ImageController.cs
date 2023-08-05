@@ -164,6 +164,20 @@ namespace NominalBackend.Controllers
                 images
             });
         }
+
+        [HttpPost]
+        [Route("UpdateItemMainImages", Name = "UpdateItemMainImages")]
+        public async Task<IActionResult> UpdateItemMainImages(List<Image> images)
+        {
+            if (!await _imageService.ValidateIsDefaultItemImage(images))
+                return BadRequest("For each item, there should be only one main image for displaying.");
+
+            if (!await _imageService.ValidateIsDefaultItemColor(images))
+                return BadRequest("For each group of the same color, there should be only one main image for displaying.");
+
+            await _imageService.UpdateMultipleAsync(images);
+            return Ok();
+        }
     }
 
 }

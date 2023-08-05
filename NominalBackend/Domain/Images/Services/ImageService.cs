@@ -9,6 +9,8 @@ namespace NominalBackend.Domain.Images.Services
     {
         public Task<bool> IsAPhotoFile(string fileName);
         Task<IEnumerable<Image>> GetImagesByItemId(int itemId);
+        Task<bool> ValidateIsDefaultItemImage(List<Image> images);
+        Task<bool> ValidateIsDefaultItemColor(List<Image> images);
     }
     public class ImageService : CrudService<Image>, IImageService
     {
@@ -32,6 +34,21 @@ namespace NominalBackend.Domain.Images.Services
                 || fileName.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
                 || fileName.EndsWith(".jfif", StringComparison.OrdinalIgnoreCase)
                 || fileName.EndsWith(".pjp", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public async Task<bool> ValidateIsDefaultItemImage(List<Image> images)
+        {
+            int count = images.Count(image => image.IsDefaultItemImage);
+            return count == 1;
+        }
+
+        public async Task<bool> ValidateIsDefaultItemColor(List<Image> images)
+        {
+           bool isValid = images
+    .GroupBy(image => image.ColorId)
+    .All(group => group.Count(image => image.IsDefaultItemColor) == 1);
+
+return isValid;
         }
     }
 }
