@@ -109,21 +109,21 @@ namespace NominalBackend.Controllers
             {
                 return BadRequest("Item Not Found");
             }
-            foreach(var colorId in colorIds)
+            if (colorIds.Count != images.Count)
             {
+                return BadRequest("You Must Attach Color To Each Image Ttem");
+            }
+            List<Image> newImages = new List<Image>();
+            for (int i = 0; i < images.Count; i++)
+            {
+                var colorId = colorIds[i]; // Get the colorId at the corresponding index
+
                 var color = await _colorService.GetByIdAsync(colorId);
                 if (color == null)
                 {
                     return BadRequest($"Color with id {colorId} Not Found");
                 }
-            }
-            if(colorIds.Count != images.Count)
-            {
-                return BadRequest("You Must Attach Color To Each Image Ttem");
-            }
-            List<Image> newImages = new List<Image>();
-            for(int i =0; i < images.Count; i++)
-            {
+
                 if (!await _imageService.IsAPhotoFile(images[i].FileName)) { return BadRequest("Not supported file type"); }
                 var imageData = new byte[images[i].Length];
                 using (var stream = images[i].OpenReadStream())
@@ -144,9 +144,10 @@ namespace NominalBackend.Controllers
             }
 
             await _imageService.AddMultipleAsync(newImages);
+            List<int> newImagesIds = newImages.Select(image => image.Id).ToList();
             return Ok(new
             {
-
+                newImagesIds
             });
         }
     }
