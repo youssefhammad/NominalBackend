@@ -150,6 +150,20 @@ namespace NominalBackend.Controllers
                 newImagesIds
             });
         }
+
+        [HttpGet]
+        [Route("GettAllImagesForItem/{itemId}", Name = "GettAllImagesForItem")]
+        public async Task<IActionResult> GettAllImagesForItem(int itemId)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if(item == null) { return BadRequest($"No Item With ID {itemId}"); }
+
+            var images = await _imageService.GetImagesByItemId(itemId);
+            return Ok(new
+            {
+                images
+            });
+        }
     }
 
 }
