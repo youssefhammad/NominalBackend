@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NominalBackend.Domain.Categories.Services;
+using NominalBackend.Domain.Images.Services;
 using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Services;
@@ -15,12 +16,15 @@ namespace NominalBackend.Controllers
         private readonly IItemService _itemService;
         private readonly ISubCategoryService _subCategoryService;
         private readonly ICategoryService _categoryService;
+        private readonly IImageService _imageService;
 
-        public ItemController(IItemService itemService, ISubCategoryService subCategoryService, ICategoryService categoryService)
+        public ItemController(IItemService itemService, ISubCategoryService subCategoryService,
+            ICategoryService categoryService, IImageService imageService)
         {
             _itemService = itemService;
             _subCategoryService = subCategoryService;
             _categoryService = categoryService;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -107,6 +111,10 @@ namespace NominalBackend.Controllers
                 return NotFound("No Items Found");
             }
             var enabledNextButton = await _itemService.EnableNextButton(filteredItemsTotalCount, paginateditems.Count() + skip);
+            foreach (var paginateditem in paginateditems)
+            {
+                await _imageService.GetImagesByItemId(paginateditem.Id);
+            }
             return Ok(new
             {
                 paginateditems,
