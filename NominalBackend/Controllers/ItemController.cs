@@ -65,7 +65,7 @@ namespace NominalBackend.Controllers
                     if (!matchingSubAndCategory) { return BadRequest("SubCategory Not Match Category"); }
                 }
             }
-            item.State = State.Active;
+            item.State = State.NotPublished;
             await _itemService.AddAsync(item);
             return Ok(new
             {
@@ -113,5 +113,22 @@ namespace NominalBackend.Controllers
                 enabledNextButton
             });
         }
+
+        [HttpGet]
+        [Route("ChnageItemStateToBeActive/{itemId}", Name = "ChnageItemStateToBeActive")]
+        public async Task<IActionResult> ChnageItemStateToBeActive(int itemId)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null) { return NotFound(); }
+            
+            item.State = State.Active;
+            await _itemService.UpdateAsync(item);
+            return Ok(new
+            {
+                item.Id
+            });
+        }
+
+
     }
 }
