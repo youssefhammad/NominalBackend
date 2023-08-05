@@ -82,5 +82,22 @@ namespace NominalBackend.Controllers
             await _colorService.UpdateAsync(color);
             return Ok(color);
         }
+
+        [HttpPost]
+        [Route("AddMultipleColors", Name = "AddMultipleColors")]
+        public async Task<IActionResult> AddMultipleColors(List<Color> colors)
+        {
+            await _colorService.AddMultipleAsync(colors);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetColorsForItem/{itemId}", Name = "GetColorsForItem")]
+        public async Task<IActionResult> GetColorsForItem(int itemId)
+        {
+            var colors = await _colorService.GetColorsForItemsById(itemId);
+            return Ok(colors);
+        }
+
     }
 }

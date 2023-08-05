@@ -42,5 +42,6 @@ namespace NominalBackend.Persistence
         public DbSet<Image> Images { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Dimensions> Dimensions { get; set; }
+        public DbSet<Color> Colors { get; set; }
     }
 }
