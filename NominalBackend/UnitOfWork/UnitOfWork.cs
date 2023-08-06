@@ -4,7 +4,7 @@ namespace NominalBackend.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync();
+        Task<T> SaveChangesAsync<T>(T entity) where T : class;
     }
     public class UnitOfWork : IUnitOfWork
     {
@@ -14,9 +14,11 @@ namespace NominalBackend.UnitOfWork
         {
             _dbContext = dbContext;
         }
-        public async Task<int> SaveChangesAsync()
+
+        public async Task<T> SaveChangesAsync<T>(T entity) where T : class
         {
-            return await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
     }
 }
