@@ -178,6 +178,34 @@ namespace NominalBackend.Controllers
             await _imageService.UpdateMultipleAsync(images);
             return Ok();
         }
+
+        [HttpGet("GetImageBytesConvertion/{id}")]
+        public async Task<IActionResult> GetImageBytes(int id)
+        {
+            var image = await _imageService.GetByIdAsync(id);
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            string fileName = image.ImageName;
+            string extension = System.IO.Path.GetExtension(fileName).ToLower();
+
+            Dictionary<string, string> mediaTypes = new Dictionary<string, string>()
+                    {
+                        { ".jpg", "image/jpeg" },
+                        { ".jpeg", "image/jpeg" },
+                        { ".png", "image/png" },
+                        { ".gif", "image/gif" },
+                    };
+
+            if (!mediaTypes.TryGetValue(extension, out string contentType))
+            {
+                return BadRequest("Unsupported file type");
+            }
+
+            return File(image.Data, contentType);
+        }
     }
 
 }
