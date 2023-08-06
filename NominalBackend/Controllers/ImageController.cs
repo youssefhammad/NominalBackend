@@ -24,7 +24,7 @@ namespace NominalBackend.Controllers
 
         [HttpPost]
         [Route("AddImage", Name = "AddImage")]
-        public async Task<IActionResult> AddImage(IFormFile image, int itemId)
+        public async Task<IActionResult> AddImage(IFormFile image, [FromQuery]int colorId,[FromQuery] int itemId)
         {
             if (image == null || image.Length == 0) { return BadRequest("No file was uploaded."); }
 
@@ -42,10 +42,18 @@ namespace NominalBackend.Controllers
                 ImageName = image.FileName,
                 ItemId = itemId,
                 State = State.Active,
-                Size = image.Length
+                Size = image.Length,
+                ColorId = colorId
             };
-            await _imageService.AddAsync(entity);
-            return Ok(entity.Id);
+            var createdImage = await _imageService.AddAsync(entity);
+            entity.Url = $"https://localhost:7206/Image/GetImageBytesConvertion/{entity.Id}";
+            entity = await _imageService.UpdateImageUrl(entity, entity.Url);
+
+            return Ok(new
+            {
+                entity.Id,
+                entity.Url
+            });
         }
 
         [HttpGet]

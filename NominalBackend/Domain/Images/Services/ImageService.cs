@@ -11,13 +11,16 @@ namespace NominalBackend.Domain.Images.Services
         Task<IEnumerable<Image>> GetImagesByItemId(int itemId);
         Task<bool> ValidateIsDefaultItemImage(List<Image> images);
         Task<bool> ValidateIsDefaultItemColor(List<Image> images);
+        Task<Image> UpdateImageUrl(Image image, string url);
     }
     public class ImageService : CrudService<Image>, IImageService
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IImageRepository _imageRepository;
 
         public ImageService(IUnitOfWork unitOfWork, ICrudRepository<Image> repository, IImageRepository imageRepository) : base(unitOfWork, repository)
         {
+            _unitOfWork = unitOfWork;
             _imageRepository = imageRepository;
         }
 
@@ -45,10 +48,18 @@ namespace NominalBackend.Domain.Images.Services
         public async Task<bool> ValidateIsDefaultItemColor(List<Image> images)
         {
            bool isValid = images
-    .GroupBy(image => image.ColorId)
-    .All(group => group.Count(image => image.IsDefaultItemColor) == 1);
+                .GroupBy(image => image.ColorId)
+                .All(group => group.Count(image => image.IsDefaultItemColor) == 1);
 
-return isValid;
+            return isValid;
+        }
+
+        public async Task<Image> UpdateImageUrl(Image image, string url)
+        {
+            var newImage = await _imageRepository.UpdateImageUrl(image.Id, url);
+            await _unitOfWork.SaveChangesAsync(newImage);
+
+            return image;
         }
     }
 }
