@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NominalBackend.Domain.ApplicationUser.Models;
 using NominalBackend.Domain.Categories.Repositories;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Images.Repositories;
@@ -28,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 });
+
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -78,6 +80,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddScoped<IColorRepository,ColorRepository>();
 builder.Services.AddScoped<IColorService, ColorService>();
+
 
 
 builder.Services.AddControllers().AddJsonOptions(options =>

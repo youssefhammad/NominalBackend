@@ -1,5 +1,7 @@
-﻿using NominalBackend.Domain.Items.Models;
+﻿using NominalBackend.DataTransferObjects;
+using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Items.Repositories;
+using NominalBackend.Domain.Wishlists.Models;
 using NominalBackend.Generics;
 using NominalBackend.Helpers.Enums;
 using NominalBackend.Helpers.Filters;
@@ -13,6 +15,7 @@ namespace NominalBackend.Domain.Items.Services
         Task<bool> EnableNextButton(int totalNumberOfItems, int returnedItems);
         Task<int> CalculateTotalNumberOfFilteredItems(IEnumerable<Item> items);
         Task<IEnumerable<Item>> PagenateItems(IEnumerable<Item> filteredItems, int skip, int size);
+        Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds, int skip, int size);
     }
     public class ItemService : CrudService<Item>, IItemService
     {
@@ -43,6 +46,13 @@ namespace NominalBackend.Domain.Items.Services
             var filteredItems = await _itemRepository.FilterItems(filter);
             var Activeitems = filteredItems.Where(a => a.State == State.Active);
             return Activeitems;
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds, int skip, int size)
+        {
+            var items = await _itemRepository.GetItemsByIds(itemIds);
+            items.Skip(skip).Take(size);
+            return items;
         }
 
         public async Task<IEnumerable<Item>> PagenateItems(IEnumerable<Item> filteredItems, int skip, int size)

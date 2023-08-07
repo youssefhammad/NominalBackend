@@ -27,6 +27,10 @@ namespace NominalBackend.Domain.Images.Services
         public async Task<IEnumerable<Image>> GetImagesByItemId(int itemId)
         {
             var images = await _imageRepository.GetImagesByItemId(itemId);
+            foreach(var ima in images)
+            {
+                ima.Data = null;
+            };
             return images;
         }
 
