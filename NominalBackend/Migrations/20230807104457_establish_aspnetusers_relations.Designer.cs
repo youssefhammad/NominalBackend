@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230807104457_establish_aspnetusers_relations")]
+    partial class establish_aspnetusers_relations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace NominalBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "aef64443-6d26-4f98-8095-f6c562e5f5f2",
+                            Id = "16634aee-381a-48e6-a72e-66335fd9d656",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "4780a1a3-2b5b-4d64-bf55-a1548eeb4257",
+                            Id = "b6bb3007-244c-4a08-91cc-e225d011bdd2",
                             ConcurrencyStamp = "2",
                             Name = "Client",
                             NormalizedName = "Client"
@@ -496,9 +499,14 @@ namespace NominalBackend.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasAnnotation("Relational:JsonPropertyName", "user_id");
 
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Purchases");
                 });
@@ -571,6 +579,92 @@ namespace NominalBackend.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("SubCategories");
+                });
+
+            modelBuilder.Entity("NominalBackend.Domain.Users.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BirthDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "birthDate");
+
+                    b.Property<bool>("Blocked")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "blocked");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2")
+                        .HasAnnotation("Relational:JsonPropertyName", "created_at");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "email");
+
+                    b.Property<bool>("EmailVerified")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "email_verified");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "firstName");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "gender");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "lastName");
+
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "nationality");
+
+                    b.Property<string>("Otp")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "otp");
+
+                    b.Property<bool>("OtpVerified")
+                        .HasColumnType("bit")
+                        .HasAnnotation("Relational:JsonPropertyName", "otp_verified");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)")
+                        .HasAnnotation("Relational:JsonPropertyName", "password");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "phone");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "role");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int")
+                        .HasAnnotation("Relational:JsonPropertyName", "state");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2")
+                        .HasAnnotation("Relational:JsonPropertyName", "updated_at");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasAnnotation("Relational:JsonPropertyName", "username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Wishlists.Models.Wishlist", b =>
@@ -715,6 +809,10 @@ namespace NominalBackend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("NominalBackend.Domain.Users.Models.User", null)
+                        .WithMany("Purchases")
+                        .HasForeignKey("UserId1");
+
                     b.Navigation("User");
                 });
 
@@ -796,6 +894,11 @@ namespace NominalBackend.Migrations
             modelBuilder.Entity("NominalBackend.Domain.SubCategories.Models.SubCategory", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("NominalBackend.Domain.Users.Models.User", b =>
+                {
+                    b.Navigation("Purchases");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.ApplicationUser.Models.ApplicationUser", b =>

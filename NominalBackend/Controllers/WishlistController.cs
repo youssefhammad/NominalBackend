@@ -76,20 +76,22 @@ namespace NominalBackend.Controllers
             });
         }
 
-        [HttpDelete]
-        [Route("SoftDeleteWishlist", Name = "SoftDeleteWishlist")]
-        public async Task<IActionResult> SoftDelete(int userId, Wishlist wishlist)
-        {
-            if(userId != wishlist.UserId)
-            {
-                return Unauthorized("Not allowed");
-            }
-            wishlist.State = State.SoftDeleted;
-            await _wishlistService.UpdateAsync(wishlist);
-            return Ok(new
-            {
-                wishlist.Id
-            });
-        }
+
+        //TO DO
+        //[HttpDelete]
+        //[Route("SoftDeleteWishlist", Name = "SoftDeleteWishlist")]
+        //public async Task<IActionResult> SoftDelete(int userId, Wishlist wishlist)
+        //{
+        //    if(userId != wishlist.UserId)
+        //    {
+        //        return Unauthorized("Not allowed");
+        //    }
+        //    wishlist.State = State.SoftDeleted;
+        //    await _wishlistService.UpdateAsync(wishlist);
+        //    return Ok(new
+        //    {
+        //        wishlist.Id
+        //    });
+        //}
     }
 }
