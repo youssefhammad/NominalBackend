@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NominalBackend.DataTransferObjects;
 using NominalBackend.Domain.Categories.Services;
 using NominalBackend.Domain.Images.Services;
@@ -152,6 +153,29 @@ namespace NominalBackend.Controllers
                 item.Id
             });
         }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("ChangeItemState", Name = "ChangeItemState")]
+        public async Task<IActionResult> ChangeItemState(int itemId, State state)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            item.State = state;
+            var updatedItem = await _itemService.UpdateAsync(item);
+            return Ok(new
+            {
+                updatedItem.Id,
+                updatedItem.State
+            });
+
+        }
+
 
 
     }
