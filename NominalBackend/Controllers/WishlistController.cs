@@ -90,8 +90,7 @@ namespace NominalBackend.Controllers
         }
 
 
-        //TODO RETURN WISHLISTID
-        //TODO CHECK WISHLIST STATE AND EXISTENCE
+        //TODO RETURN WISHLISTID WITH EACH ITEM
         [Authorize(Roles = "Client")]
         [HttpGet]
         [Route("GetUserWishlist", Name = "GetUserWishlist")]
@@ -142,7 +141,20 @@ namespace NominalBackend.Controllers
             }
             var item = await _itemService.GetByIdAsync(itemId);
             if(item == null) { return NotFound("No Item Found"); }
-
+            var checkWishlist = await _wishlistService.GetWishlistByItemId(itemId);
+            if(checkWishlist != null && checkWishlist.State == State.Active)
+            {
+                return BadRequest();
+            }
+            else if(checkWishlist != null && checkWishlist.State == State.SoftDeleted)
+            {
+                checkWishlist.State = State.Active;
+                var updatedWishlist = await _wishlistService.UpdateAsync(checkWishlist);
+                return Ok(new
+                {
+                    updatedWishlist.Id
+                });
+            }
             Wishlist wishlist = new Wishlist()
             {
                 ItemId = itemId,

@@ -8,6 +8,7 @@ namespace NominalBackend.Domain.Wishlists.Services
     public interface IWishlistService : ICrudService<Wishlist>
     {
         Task<List<int>> GetAllWishlistForUser(string userId);
+        Task<Wishlist> GetWishlistByItemId(int itemId);
     }
     public class WishlistService : CrudService<Wishlist>, IWishlistService
     {
@@ -23,6 +24,12 @@ namespace NominalBackend.Domain.Wishlists.Services
         {
             var wishlistIds = await _wishlistRepository.GetAllWishlistForUser(userId);
             return wishlistIds;
+        }
+
+        public async Task<Wishlist> GetWishlistByItemId(int itemId)
+        {
+            var wishlist = await _wishlistRepository.GetWishlistByItemId(itemId);
+            return wishlist;
         }
     }
 }

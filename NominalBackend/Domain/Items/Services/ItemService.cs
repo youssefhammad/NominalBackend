@@ -51,6 +51,7 @@ namespace NominalBackend.Domain.Items.Services
         public async Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds, int skip, int size)
         {
             var items = await _itemRepository.GetItemsByIds(itemIds);
+            items.Where(a => a.State == State.Active);
             items.Skip(skip).Take(size);
             return items;
         }
