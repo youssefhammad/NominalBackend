@@ -22,6 +22,17 @@ namespace NominalBackend.Persistence
         {
             base.OnModelCreating(modelBuilder);
             SeedRoles(modelBuilder);
+            modelBuilder.Entity<Purchase>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.Purchases)
+            .HasForeignKey(p => p.UserId)
+            .IsRequired();
+
+            modelBuilder.Entity<Wishlist>()
+            .HasOne(p => p.User)
+            .WithMany(u => u.Wishlists)
+            .HasForeignKey(p => p.UserId)
+            .IsRequired();
         }
 
         private static void SeedRoles(ModelBuilder builder)
@@ -34,7 +45,7 @@ namespace NominalBackend.Persistence
                 );
         }
 
-        public DbSet<User> Users { get; set; }
+        //public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<Item> Items { get; set; }
