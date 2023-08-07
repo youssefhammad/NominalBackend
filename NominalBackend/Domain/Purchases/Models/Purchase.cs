@@ -24,8 +24,8 @@ namespace NominalBackend.Domain.Purchases.Models
         public string ShippingAddress { get; set; }
 
         [JsonPropertyName("user_id")]
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser.Models.ApplicationUser User { get; set; }
         public ICollection<PurchaseItem> PurchaseItems { get; set; }
     }
 }
