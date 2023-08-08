@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Images.Models;
 using NominalBackend.Domain.Images.Services;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Helpers.Enums;
+using System.Data;
 
 namespace NominalBackend.Controllers
 {
@@ -22,6 +24,7 @@ namespace NominalBackend.Controllers
             _colorService = colorService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("AddImage", Name = "AddImage")]
         public async Task<IActionResult> AddImage(IFormFile image, [FromQuery]int colorId,[FromQuery] int itemId)
@@ -108,6 +111,7 @@ namespace NominalBackend.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("AddMultipleImages", Name = "AddMultipleImages")]
         public async Task<IActionResult> AddMultipleImages(List<IFormFile> images, [FromQuery] List<int> colorIds, [FromQuery] int itemId)
@@ -152,6 +156,12 @@ namespace NominalBackend.Controllers
             }
 
             await _imageService.AddMultipleAsync(newImages);
+
+            foreach(var newImage in newImages)
+            {
+                newImage.Url = $"https://localhost:7206/Image/GetImageBytesConvertion/{newImage.Id}";
+            }
+            await _imageService.UpdateMultipleAsync(newImages);
             List<int> newImagesIds = newImages.Select(image => image.Id).ToList();
             return Ok(new
             {
@@ -173,6 +183,7 @@ namespace NominalBackend.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("UpdateItemMainImages", Name = "UpdateItemMainImages")]
         public async Task<IActionResult> UpdateItemMainImages(List<Image> images)
