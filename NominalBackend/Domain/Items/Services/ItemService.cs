@@ -16,6 +16,7 @@ namespace NominalBackend.Domain.Items.Services
         Task<int> CalculateTotalNumberOfFilteredItems(IEnumerable<Item> items);
         Task<IEnumerable<Item>> PagenateItems(IEnumerable<Item> filteredItems, int skip, int size);
         Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds, int skip, int size);
+        Task<IEnumerable<Item>> GetItemsByName(string name);
     }
     public class ItemService : CrudService<Item>, IItemService
     {
@@ -53,6 +54,12 @@ namespace NominalBackend.Domain.Items.Services
             var items = await _itemRepository.GetItemsByIds(itemIds);
             items.Where(a => a.State == State.Active);
             items.Skip(skip).Take(size);
+            return items;
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByName(string name)
+        {
+            var items = await _itemRepository.GetItemsByName(name);
             return items;
         }
 
