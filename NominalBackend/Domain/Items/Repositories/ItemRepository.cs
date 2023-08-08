@@ -14,6 +14,7 @@ namespace NominalBackend.Domain.Items.Repositories
         Task<IEnumerable<Item>> FilterItems(ItemFilter filter);
         Task<int> CountItemsNumberWithActiveState();
         Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds);
+        Task<IEnumerable<Item>> GetItemsByName(string name);
     }
     public class ItemRepository : CrudRepository<Item>, IItemRepository
     {
@@ -95,6 +96,11 @@ namespace NominalBackend.Domain.Items.Repositories
                     .Where(item => itemIds.Contains(item.Id))
                     .ToListAsync();
             return items;
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByName(string name)
+        {
+            return await _dbContext.Items.Where(i => EF.Functions.Like(i.Name, $"%{name}%")).ToListAsync();
         }
     }
 }

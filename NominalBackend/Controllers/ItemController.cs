@@ -154,7 +154,6 @@ namespace NominalBackend.Controllers
             });
         }
 
-
         [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("ChangeItemState", Name = "ChangeItemState")]
@@ -173,8 +172,21 @@ namespace NominalBackend.Controllers
                 updatedItem.Id,
                 updatedItem.State
             });
-
         }
+
+        [HttpGet]
+        [Route("GetItemByName", Name = "GetItemByName")]
+        public async Task<IActionResult> GetItemByName(string name)
+        {
+            var items = await _itemService.GetItemsByName(name);
+            if(!items.Any()) { return NotFound(); }
+            return Ok(new
+            {
+                items
+            });
+        }
+
+
 
 
 
