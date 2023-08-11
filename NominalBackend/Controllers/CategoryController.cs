@@ -30,7 +30,7 @@ namespace NominalBackend.Controllers
             });
         }
 
-        [Authorize(Roles = "Admin")]
+
         [HttpGet]
         [Route("GetAllCategories", Name = "GetAllCategories")]
         public async Task<IActionResult> GetAll()
