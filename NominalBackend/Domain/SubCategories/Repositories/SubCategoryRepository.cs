@@ -8,6 +8,7 @@ namespace NominalBackend.Domain.SubCategories.Repositories
     public interface ISubCategoryRepository : ICrudRepository<SubCategory>
     {
         Task<SubCategory> GetSubCategoryBycategoryId(int subCategoryId, int categoryId);
+        Task<IEnumerable<SubCategory>> GetAllSubCategoriesbyCategoryId(int categoryId);
     }
     public class SubCategoryRepository : CrudRepository<SubCategory>, ISubCategoryRepository
     {
@@ -16,6 +17,12 @@ namespace NominalBackend.Domain.SubCategories.Repositories
         public SubCategoryRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesbyCategoryId(int categoryId)
+        {
+            var subCategories = await _dbContext.SubCategories.Where(a => a.CategoryId == categoryId).ToListAsync();
+            return subCategories;
         }
 
         public async Task<SubCategory> GetSubCategoryBycategoryId(int subCategoryId, int categoryId)

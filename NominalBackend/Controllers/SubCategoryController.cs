@@ -92,7 +92,18 @@ namespace NominalBackend.Controllers
             {
                 subCategory.Id
             });
-            
+        }
+
+        [HttpGet]
+        [Route("GetAllSubCategoriesGivenCategory", Name = "GetAllSubCategoriesGivenCategory")]
+        public async Task<IActionResult> GetAllSubCategoriesbyCategoryId(int categoryId)
+        {
+            var subCategories = await _subCategoryService.GetAllSubCategoriesbyCategoryId(categoryId);
+            if(!subCategories.Any()) { return NotFound(); }
+            return Ok(new
+            {
+                subCategories
+            });
         }
     }
 

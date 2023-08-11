@@ -8,6 +8,7 @@ namespace NominalBackend.Domain.SubCategories.Services
     public interface ISubCategoryService : ICrudService<SubCategory>
     {
         Task<bool> IsSubCategoryRelatesToCategoty(int subCategoryId, int categoryId);
+        Task<IEnumerable<SubCategory>> GetAllSubCategoriesbyCategoryId(int categoryId);
     }
     public class SubCategoryService : CrudService<SubCategory>, ISubCategoryService
     {
@@ -17,6 +18,11 @@ namespace NominalBackend.Domain.SubCategories.Services
             ISubCategoryRepository subCategoryRepository) : base(unitOfWork, repository)
         {
             _subCategoryRepository = subCategoryRepository;
+        }
+
+        public async Task<IEnumerable<SubCategory>> GetAllSubCategoriesbyCategoryId(int categoryId)
+        {
+            return await _subCategoryRepository.GetAllSubCategoriesbyCategoryId(categoryId);
         }
 
         public async Task<bool> IsSubCategoryRelatesToCategoty(int subCategoryId, int categoryId)
