@@ -205,5 +205,42 @@ namespace NominalBackend.Controllers
                 itemsDTO
             });
         }
+
+        [HttpGet]
+        [Route("SearchItem/{ItemName}", Name = "SearchItem")]
+
+        public async Task<IActionResult> SearchItem(string itemname)
+        {
+            var items = await _itemService.searchItem(itemname);
+            if (!items.Any()) { return NotFound(); }
+            return Ok(new
+            {
+                items
+            });
+        }
+
+        [HttpGet]
+        [Route("GetItemsBySubCategoryId/{SubCategoryID}", Name = "GetItemsBySubCategoryId")]
+        public async Task<IActionResult> GetItemsBySubCategoryId(int SubCategoryID)
+        {
+            var items = await _itemService.GetItemsBySubCategoryId(SubCategoryID);
+            if (!items.Any()) { return NotFound(); }
+            return Ok(new
+            {
+                items
+            });
+        }
+
+        [HttpGet]
+        [Route("GetItemsByCategoryId/{CategoryID}", Name = "GetItemsByCategoryId")]
+        public async Task<IActionResult> GetItemsByCategoryId(int CategoryID)
+        {
+            var items = await _itemService.GetItemsByCategoryId(CategoryID);
+            if (!items.Any()) { return NotFound(); }
+            return Ok(new
+            {
+                items
+            });
+        }
     }
 }
