@@ -186,9 +186,24 @@ namespace NominalBackend.Controllers
             });
         }
 
-
-
-
-
+        [HttpGet]
+        [Route("GetItemwithImagesAndColors/{itemId}", Name = "GetItemwithImagesAndColors")]
+        public async Task<IActionResult> GetItemwithImagesAndColors(int itemId)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null) { return NotFound(); };
+            var images = await _imageService.GetImagesByItemId(itemId);
+            item.Images = images.ToList();
+            var availableColorsForitem = await _colorService.GetColorsForItemsById(itemId);
+            GetAndFilterItemsDTO itemsDTO = new GetAndFilterItemsDTO()
+            {
+                Item = item,
+                AvailableColors = availableColorsForitem.ToList(),
+            };
+            return Ok(new
+            {
+                itemsDTO
+            });
+        }
     }
 }
