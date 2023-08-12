@@ -60,7 +60,7 @@ namespace NominalBackend.Controllers
         [Route("DeleteColor", Name ="DeleteColor")]
         public async Task<IActionResult> Delete(Color color)
         {
-            var colorExsist = await _colorService.GetByIdAsync(color.id);
+            var colorExsist = await _colorService.GetByIdAsync(color.Id);
             if (colorExsist == null)
             {
                 return BadRequest();
@@ -74,13 +74,30 @@ namespace NominalBackend.Controllers
         [Route("UpdateColor",Name = "UpdateColor")]
         public async Task<IActionResult> Update(Color color)
         {
-            //var colorExcist = await _colorService.GetByIdAsync(color.id);
-            //if (colorExcist == null)
-            //{
-            //    return BadRequest();
-            //}
+            var colorExcist = await _colorService.GetByIdAsync(color.Id);
+            if (colorExcist == null)
+            {
+                return BadRequest();
+            }
             await _colorService.UpdateAsync(color);
             return Ok(color);
         }
+
+        [HttpPost]
+        [Route("AddMultipleColors", Name = "AddMultipleColors")]
+        public async Task<IActionResult> AddMultipleColors(List<Color> colors)
+        {
+            await _colorService.AddMultipleAsync(colors);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("GetColorsForItem/{itemId}", Name = "GetColorsForItem")]
+        public async Task<IActionResult> GetColorsForItem(int itemId)
+        {
+            var colors = await _colorService.GetColorsForItemsById(itemId);
+            return Ok(colors);
+        }
+
     }
 }

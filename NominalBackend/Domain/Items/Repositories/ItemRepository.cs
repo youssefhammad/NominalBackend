@@ -11,8 +11,10 @@ namespace NominalBackend.Domain.Items.Repositories
 {
     public interface IItemRepository : ICrudRepository<Item>
     {
-        Task<IEnumerable<Item>> FilterItems(ItemFilter filter/*, int skip, int size*/);
-        Task<int> CountItemsNumberWithActiveState(); 
+        Task<IEnumerable<Item>> FilterItems(ItemFilter filter);
+        Task<int> CountItemsNumberWithActiveState();
+        Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds);
+        Task<IEnumerable<Item>> GetItemsByName(string name);
     }
     public class ItemRepository : CrudRepository<Item>, IItemRepository
     {
@@ -86,6 +88,19 @@ namespace NominalBackend.Domain.Items.Repositories
             }
 
             return await _dbContext.Items.FromSqlRaw(query, parameters.ToArray()).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds)
+        {
+            var items = await _dbContext.Items
+                    .Where(item => itemIds.Contains(item.Id))
+                    .ToListAsync();
+            return items;
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByName(string name)
+        {
+            return await _dbContext.Items.Where(i => EF.Functions.Like(i.Name, $"%{name}%")).ToListAsync();
         }
     }
 }

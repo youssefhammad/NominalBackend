@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NominalBackend.DataTransferObjects;
 using NominalBackend.Domain.Categories.Services;
+using NominalBackend.Domain.Images.Services;
 using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Services;
@@ -15,12 +18,17 @@ namespace NominalBackend.Controllers
         private readonly IItemService _itemService;
         private readonly ISubCategoryService _subCategoryService;
         private readonly ICategoryService _categoryService;
+        private readonly IImageService _imageService;
+        private readonly IColorService _colorService;
 
-        public ItemController(IItemService itemService, ISubCategoryService subCategoryService, ICategoryService categoryService)
+        public ItemController(IItemService itemService, ISubCategoryService subCategoryService,
+            ICategoryService categoryService, IImageService imageService, IColorService colorService)
         {
             _itemService = itemService;
             _subCategoryService = subCategoryService;
             _categoryService = categoryService;
+            _imageService = imageService;
+            _colorService = colorService;
         }
 
         [HttpGet]
@@ -65,7 +73,7 @@ namespace NominalBackend.Controllers
                     if (!matchingSubAndCategory) { return BadRequest("SubCategory Not Match Category"); }
                 }
             }
-            item.State = State.Active;
+            item.State = State.NotPublished;
             await _itemService.AddAsync(item);
             return Ok(new
             {
@@ -107,10 +115,94 @@ namespace NominalBackend.Controllers
                 return NotFound("No Items Found");
             }
             var enabledNextButton = await _itemService.EnableNextButton(filteredItemsTotalCount, paginateditems.Count() + skip);
+
+            List<GetAndFilterItemsDTO> itemsDTO = new List<GetAndFilterItemsDTO>();
+
+            foreach (var paginateditem in paginateditems)
+            {
+                await _imageService.GetImagesByItemId(paginateditem.Id);
+                var availableColorsForitem = await _colorService.GetColorsForItemsById(paginateditem.Id);
+
+                var itemDTO = new GetAndFilterItemsDTO
+                {
+                    Item = paginateditem,
+                    AvailableColors = availableColorsForitem.ToList()
+                };
+
+                itemsDTO.Add(itemDTO);
+            }
+
             return Ok(new
             {
-                paginateditems,
+                itemsDTO,
                 enabledNextButton
+            });
+        }
+
+        [HttpGet]
+        [Route("ChnageItemStateToBeActive/{itemId}", Name = "ChnageItemStateToBeActive")]
+        public async Task<IActionResult> ChnageItemStateToBeActive(int itemId)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null) { return NotFound(); }
+            
+            item.State = State.Active;
+            await _itemService.UpdateAsync(item);
+            return Ok(new
+            {
+                item.Id
+            });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("ChangeItemState", Name = "ChangeItemState")]
+        public async Task<IActionResult> ChangeItemState(int itemId, State state)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            item.State = state;
+            var updatedItem = await _itemService.UpdateAsync(item);
+            return Ok(new
+            {
+                updatedItem.Id,
+                updatedItem.State
+            });
+        }
+
+        [HttpGet]
+        [Route("GetItemByName", Name = "GetItemByName")]
+        public async Task<IActionResult> GetItemByName(string name)
+        {
+            var items = await _itemService.GetItemsByName(name);
+            if(!items.Any()) { return NotFound(); }
+            return Ok(new
+            {
+                items
+            });
+        }
+
+        [HttpGet]
+        [Route("GetItemwithImagesAndColors/{itemId}", Name = "GetItemwithImagesAndColors")]
+        public async Task<IActionResult> GetItemwithImagesAndColors(int itemId)
+        {
+            var item = await _itemService.GetByIdAsync(itemId);
+            if (item == null) { return NotFound(); };
+            var images = await _imageService.GetImagesByItemId(itemId);
+            item.Images = images.ToList();
+            var availableColorsForitem = await _colorService.GetColorsForItemsById(itemId);
+            GetAndFilterItemsDTO itemsDTO = new GetAndFilterItemsDTO()
+            {
+                Item = item,
+                AvailableColors = availableColorsForitem.ToList(),
+            };
+            return Ok(new
+            {
+                itemsDTO
             });
         }
     }

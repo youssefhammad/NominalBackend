@@ -20,7 +20,9 @@ namespace NominalBackend.Helpers.Enums
         [JsonPropertyName("active")]
         Active,
         [JsonPropertyName("soft_deleted")]
-        SoftDeleted
+        SoftDeleted,
+        [JsonPropertyName("not_published")]
+        NotPublished
     }
 
     public enum  UserRole

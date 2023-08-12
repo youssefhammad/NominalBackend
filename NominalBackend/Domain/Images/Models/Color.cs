@@ -5,7 +5,7 @@ namespace NominalBackend.Domain.Images.Models
     public class Color
     {
 
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [JsonPropertyName("color_name")]
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace NominalBackend.Domain.Images.Models
         [JsonPropertyName("hex_decimal")]
         public string HexDicemal { get; set; }
 
-        public ICollection<Color>? Colors { get; set; }
+        public ICollection<Image>? Images{ get; set; }
     }
 
 }

@@ -11,6 +11,8 @@ namespace NominalBackend.Generics
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        Task AddMultipleAsync(List<T> entities);
+        Task UpdateMultipleAsync(List<T> entities);
     }
 
 
@@ -29,6 +31,11 @@ namespace NominalBackend.Generics
             return entity;
         }
 
+        public async Task AddMultipleAsync(List<T> entities)
+        {
+            await _dbContext.Set<T>().AddRangeAsync(entities);
+        }
+
         public async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
@@ -41,13 +48,22 @@ namespace NominalBackend.Generics
 
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _dbContext.Set<T>().FindAsync(id);
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            var entity = await _dbContext.Set<T>().FindAsync(id);
+            _dbContext.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
+            return entity;
         }
 
         public async Task<T> UpdateAsync(T entity)
         {
             _dbContext.Set<T>().Update(entity);
             return entity;
+        }
+
+        public async Task UpdateMultipleAsync(List<T> entities)
+        {
+            _dbContext.Set<T>().UpdateRange(entities);
+            return;
         }
     }
 }
