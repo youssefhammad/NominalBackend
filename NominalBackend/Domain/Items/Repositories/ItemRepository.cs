@@ -15,6 +15,9 @@ namespace NominalBackend.Domain.Items.Repositories
         Task<int> CountItemsNumberWithActiveState();
         Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds);
         Task<IEnumerable<Item>> GetItemsByName(string name);
+        Task<IEnumerable<Item>> SearchItem(string itemName);
+        Task<IEnumerable<Item>> GetItemsBySubCategoryId(int id);
+        Task<IEnumerable<Item>> GetItemsByCategoryId(int id);
     }
     public class ItemRepository : CrudRepository<Item>, IItemRepository
     {
@@ -101,6 +104,30 @@ namespace NominalBackend.Domain.Items.Repositories
         public async Task<IEnumerable<Item>> GetItemsByName(string name)
         {
             return await _dbContext.Items.Where(i => EF.Functions.Like(i.Name, $"%{name}%")).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Item>> SearchItem(string itemName)
+        {
+            var query = $"select  i.* from Items as i " +
+                "join SubCategories as s on i.SubCategoryId = s.Id " +
+                "join Categories as c on i.CategoryId = c.Id " +
+                "where (i.Name like '%c%'  " +
+                "or s.Name like '%c%' " +
+                "or c.Name like '%c%')" +
+                "and i.State = 0 ";
+            return await _dbContext.Items.FromSqlRaw(query).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsBySubCategoryId(int id)
+        {
+            var query = "Select * from Items where SubCategoryId = " + id + " and State = 0";
+            return await _dbContext.Items.FromSqlRaw(query).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsByCategoryId(int id)
+        {
+            var query = "Select * from Items where CategoryId = " + id + " and State = 0";
+            return await _dbContext.Items.FromSqlRaw(query).ToListAsync();
         }
     }
 }
