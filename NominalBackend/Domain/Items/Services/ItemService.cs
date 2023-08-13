@@ -17,6 +17,9 @@ namespace NominalBackend.Domain.Items.Services
         Task<IEnumerable<Item>> PagenateItems(IEnumerable<Item> filteredItems, int skip, int size);
         Task<IEnumerable<Item>> GetItemsByIds(List<int> itemIds, int skip, int size);
         Task<IEnumerable<Item>> GetItemsByName(string name);
+        Task<IEnumerable<Item>> searchItem(string itemname);
+        Task<IEnumerable<Item>> GetItemsBySubCategoryId(int subCategoryId);
+        Task<IEnumerable<Item>> GetItemsByCategoryId(int subCategoryId);
     }
     public class ItemService : CrudService<Item>, IItemService
     {
@@ -67,6 +70,23 @@ namespace NominalBackend.Domain.Items.Services
         {
             var pagenatedItems = filteredItems.Skip(skip).Take(size);
             return pagenatedItems;
+        }
+
+        public async Task<IEnumerable<Item>> searchItem(string itemname)
+        {
+            var items = await _itemRepository.SearchItem(itemname);
+            return items;
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsBySubCategoryId(int subCategoryId)
+        {
+            var items = await _itemRepository.GetItemsBySubCategoryId(subCategoryId);
+            return items;
+        }
+        public async Task<IEnumerable<Item>> GetItemsByCategoryId(int subCategoryId)
+        {
+            var items = await _itemRepository.GetItemsByCategoryId(subCategoryId);
+            return items;
         }
     }
 }
