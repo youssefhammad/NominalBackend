@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NominalBackend.Domain.Categories.Models;
+using NominalBackend.Domain.Engineers.Models;
 using NominalBackend.Domain.Images.Models;
 using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Purchases.Models;
@@ -54,5 +55,7 @@ namespace NominalBackend.Persistence
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<Dimensions> Dimensions { get; set; }
         public DbSet<Color> Colors { get; set; }
+        public DbSet<Engineer> Engineers { get; set; }
+        public DbSet<EngineerPortfolio> EngineerPortfolios { get; set; }
     }
 }

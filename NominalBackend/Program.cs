@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using NominalBackend.Domain.ApplicationUser.Models;
 using NominalBackend.Domain.Categories.Repositories;
 using NominalBackend.Domain.Categories.Services;
+using NominalBackend.Domain.Engineers.Repositories;
 using NominalBackend.Domain.Images.Repositories;
 using NominalBackend.Domain.Images.Services;
 using NominalBackend.Domain.Items.Repositories;
@@ -91,7 +92,12 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IColorRepository,ColorRepository>();
 builder.Services.AddScoped<IColorService, ColorService>();
 
+builder.Services.AddScoped<IEngineerRepository, EngineerRepository>();
+builder.Services.AddScoped<IEngineerService, EngineerService>();
 
+
+builder.Services.AddScoped<IEngineerPortfolioRepository, EngineerPortfolioRepository>();
+builder.Services.AddScoped<IEngineerPortfolioService, EngineerPortfolioService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
