@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230814113734_adding_staticdata_table")]
+    partial class adding_staticdata_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -276,7 +279,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Engineers.Models.Engineer", b =>
@@ -302,7 +305,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Engineers", (string)null);
+                    b.ToTable("Engineers");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Engineers.Models.EngineerPortfolio", b =>
@@ -335,7 +338,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("EngineerId");
 
-                    b.ToTable("EngineerPortfolios", (string)null);
+                    b.ToTable("EngineerPortfolios");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Color", b =>
@@ -358,7 +361,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colors", (string)null);
+                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Images.Models.Image", b =>
@@ -420,7 +423,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Items.Models.Dimensions", b =>
@@ -449,7 +452,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Dimensions", (string)null);
+                    b.ToTable("Dimensions");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Items.Models.Item", b =>
@@ -518,7 +521,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Purchases.Models.Purchase", b =>
@@ -559,7 +562,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Purchases", (string)null);
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Purchases.Models.PurchaseItem", b =>
@@ -588,7 +591,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("PurchaseId");
 
-                    b.ToTable("PurchaseItem", (string)null);
+                    b.ToTable("PurchaseItem");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.SubCategories.Models.SubCategory", b =>
@@ -629,7 +632,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("SubCategories", (string)null);
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.WebSiteStaticInfo.StaticData.Models.StaticData", b =>
@@ -652,7 +655,7 @@ namespace NominalBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("staticData", (string)null);
+                    b.ToTable("staticData");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Wishlists.Models.Wishlist", b =>
@@ -686,7 +689,7 @@ namespace NominalBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wishlists", (string)null);
+                    b.ToTable("Wishlists");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.ApplicationUser.Models.ApplicationUser", b =>

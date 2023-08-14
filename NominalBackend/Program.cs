@@ -13,6 +13,8 @@ using NominalBackend.Domain.Items.Repositories;
 using NominalBackend.Domain.Items.Services;
 using NominalBackend.Domain.SubCategories.Repositories;
 using NominalBackend.Domain.SubCategories.Services;
+using NominalBackend.Domain.WebSiteStaticInfo.StaticData.Repositories;
+using NominalBackend.Domain.WebSiteStaticInfo.StaticData.Services;
 using NominalBackend.Domain.Wishlists.Repositories;
 using NominalBackend.Domain.Wishlists.Services;
 using NominalBackend.Generics;
@@ -95,9 +97,11 @@ builder.Services.AddScoped<IColorService, ColorService>();
 builder.Services.AddScoped<IEngineerRepository, EngineerRepository>();
 builder.Services.AddScoped<IEngineerService, EngineerService>();
 
-
 builder.Services.AddScoped<IEngineerPortfolioRepository, EngineerPortfolioRepository>();
 builder.Services.AddScoped<IEngineerPortfolioService, EngineerPortfolioService>();
+
+builder.Services.AddScoped<IStaticDataRepository, StaticDataRepository>();
+builder.Services.AddScoped<IStaticDataService, StaticDataService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

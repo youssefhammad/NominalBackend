@@ -8,6 +8,7 @@ using NominalBackend.Domain.Items.Models;
 using NominalBackend.Domain.Purchases.Models;
 using NominalBackend.Domain.SubCategories.Models;
 using NominalBackend.Domain.Users.Models;
+using NominalBackend.Domain.WebSiteStaticInfo.StaticData.Models;
 using NominalBackend.Domain.Wishlists.Models;
 
 namespace NominalBackend.Persistence
@@ -57,5 +58,6 @@ namespace NominalBackend.Persistence
         public DbSet<Color> Colors { get; set; }
         public DbSet<Engineer> Engineers { get; set; }
         public DbSet<EngineerPortfolio> EngineerPortfolios { get; set; }
+        public DbSet<StaticData> staticData { get; set; }
     }
 }
