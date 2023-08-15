@@ -9,6 +9,7 @@ using NominalBackend.Domain.Purchases.Models;
 using NominalBackend.Domain.SubCategories.Models;
 using NominalBackend.Domain.Users.Models;
 using NominalBackend.Domain.WebSiteStaticInfo.StaticData.Models;
+using NominalBackend.Domain.WebSiteStaticInfo.StaticImages.Models;
 using NominalBackend.Domain.Wishlists.Models;
 
 namespace NominalBackend.Persistence
@@ -59,5 +60,6 @@ namespace NominalBackend.Persistence
         public DbSet<Engineer> Engineers { get; set; }
         public DbSet<EngineerPortfolio> EngineerPortfolios { get; set; }
         public DbSet<StaticData> staticData { get; set; }
+        public DbSet<StaticImage> StaticImages { get; set; }
     }
 }

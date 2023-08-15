@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230814212945_create_table_static_images")]
+    partial class create_table_static_images
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace NominalBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5479bcd8-3f50-4f93-bd93-a7d5f5c8c7ea",
+                            Id = "0f354a3e-bf2d-483b-bee5-18a5bfd0076c",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "3d1cbf9b-bbeb-41d0-8a93-b4fb93ac6514",
+                            Id = "f18b7325-dc71-4dee-aeaf-3ae2a081d7d9",
                             ConcurrencyStamp = "2",
                             Name = "Client",
                             NormalizedName = "Client"
@@ -669,12 +672,9 @@ namespace NominalBackend.Migrations
                         .HasAnnotation("Relational:JsonPropertyName", "bytes");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "description");
-
-                    b.Property<string>("ImageName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "image_name");
 
                     b.Property<int?>("ReferenceId")
                         .HasColumnType("int")
@@ -683,10 +683,6 @@ namespace NominalBackend.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int")
                         .HasAnnotation("Relational:JsonPropertyName", "type");
-
-                    b.Property<string>("URL")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "url");
 
                     b.HasKey("Id");
 
