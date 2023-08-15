@@ -57,4 +57,16 @@ namespace NominalBackend.Helpers.Enums
         [JsonPropertyName("created_at")]
         CreatedAt
     }
+
+    public enum StaticImageType
+    {
+        [JsonPropertyName("Category")]
+        Category,
+        [JsonPropertyName("sub_category")]
+        SubCategory,
+        [JsonPropertyName("engineer_profile")]
+        EngineerProfile,
+        [JsonPropertyName("cover_photo")]
+        CoverPhoto
+    }
 }

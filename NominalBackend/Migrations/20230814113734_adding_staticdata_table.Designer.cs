@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NominalBackend.Persistence;
 
@@ -11,9 +12,11 @@ using NominalBackend.Persistence;
 namespace NominalBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230814113734_adding_staticdata_table")]
+    partial class adding_staticdata_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,14 +54,14 @@ namespace NominalBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5479bcd8-3f50-4f93-bd93-a7d5f5c8c7ea",
+                            Id = "92fcca97-ebf5-4e13-988f-369c66f2448a",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "3d1cbf9b-bbeb-41d0-8a93-b4fb93ac6514",
+                            Id = "e9d91c2f-677f-4e8f-99f6-bc93e14d4c43",
                             ConcurrencyStamp = "2",
                             Name = "Client",
                             NormalizedName = "Client"
@@ -653,44 +656,6 @@ namespace NominalBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("staticData");
-                });
-
-            modelBuilder.Entity("NominalBackend.Domain.WebSiteStaticInfo.StaticImages.Models.StaticImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("Data")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "bytes");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "description");
-
-                    b.Property<string>("ImageName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "image_name");
-
-                    b.Property<int?>("ReferenceId")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "reference_id ");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "type");
-
-                    b.Property<string>("URL")
-                        .HasColumnType("nvarchar(max)")
-                        .HasAnnotation("Relational:JsonPropertyName", "url");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StaticImages");
                 });
 
             modelBuilder.Entity("NominalBackend.Domain.Wishlists.Models.Wishlist", b =>
